@@ -25,7 +25,7 @@
 
 #include <hardware/hardware.h>
 #include <hardware/fingerprint.h>
-#include <utils/threads.h>
+#include <cutils/threads.h>
 
 typedef struct {
     void *libhandle;
