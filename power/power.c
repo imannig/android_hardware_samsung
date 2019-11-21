@@ -22,6 +22,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <malloc.h>
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +32,7 @@
 
 #define LOG_TAG "SamsungPowerHAL"
 /* #define LOG_NDEBUG 0 */
-#include <utils/Log.h>
+#include <cutils/log.h>
 
 #include <hardware/hardware.h>
 #include <hardware/power.h>

@@ -20,14 +20,21 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := power.c
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+LOCAL_C_INCLUDES += \
+	$(LOCAL_PATH)/include \
+	hardware/libhardware/include
 
-LOCAL_SHARED_LIBRARIES := liblog libcutils
+LOCAL_SHARED_LIBRARIES := \
+	liblog \
+    libcutils \
+	libhardware
+
 LOCAL_STATIC_LIBRARIES := liblights_helper
 
 LOCAL_MODULE := power.$(TARGET_BOOTLOADER_BOARD_NAME)
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS := optional
+LOCAL_VENDOR_MODULE := true
 
 ifneq ($(TARGET_TAP_TO_WAKE_NODE),)
     LOCAL_CFLAGS := -DTARGET_TAP_TO_WAKE_NODE=\"$(TARGET_TAP_TO_WAKE_NODE)\"
