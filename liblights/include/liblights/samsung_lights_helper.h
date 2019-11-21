@@ -17,6 +17,7 @@
 #ifndef SAMSUNG_LIGHTS_HELPER_H
 #define SAMSUNG_LIGHTS_HELPER_H
 
+#include <cutils/list.h>
 #include <samsung_lights.h>
 
 /*

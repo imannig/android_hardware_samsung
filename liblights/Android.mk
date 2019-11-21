@@ -18,13 +18,24 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := lights_helper.c
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
-LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)/include
+LOCAL_C_INCLUDES += \
+	$(LOCAL_PATH)/include \
+	hardware/libhardware/include
 
-LOCAL_SHARED_LIBRARIES := liblog
+LOCAL_EXPORT_C_INCLUDE_DIRS += \
+	$(LOCAL_PATH)/include \
+	hardware/libhardware/include
+
+LOCAL_SHARED_LIBRARIES := \
+	liblog \
+    libcutils \
+	libhardware
 
 LOCAL_MODULE := liblights_helper
 LOCAL_MODULE_TAGS := optional
+LOCAL_VENDOR_MODULE := true
+
+LOCAL_CFLAGS := -Werror -Wimplicit-function-declaration
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -34,13 +45,17 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := lights.c
 
-LOCAL_SHARED_LIBRARIES := liblog
+LOCAL_SHARED_LIBRARIES := \
+	liblog \
+    libcutils \
+	libhardware
+
 LOCAL_STATIC_LIBRARIES := liblights_helper
 
 LOCAL_MODULE := lights.$(TARGET_BOOTLOADER_BOARD_NAME)
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS := optional
-LOCAL_PROPRIETARY_MODULE := true
+LOCAL_VENDOR_MODULE := true
 
 include $(BUILD_SHARED_LIBRARY)
 
