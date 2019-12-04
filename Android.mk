@@ -50,5 +50,6 @@ include $(SAM_ROOT)/hidl/Android.mk
 include $(SAM_ROOT)/modemloader/Android.mk
 include $(SAM_ROOT)/power/Android.mk
 include $(SAM_ROOT)/qcom-bt/Android.mk
+include $(SAM_ROOT)/qcom-wifi/Android.mk
 include $(SAM_ROOT)/ril/Android.mk
 endif
