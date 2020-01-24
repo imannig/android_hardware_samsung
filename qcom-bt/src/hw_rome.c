@@ -95,6 +95,8 @@ int dnld_fd = -1;
 /*****************************************************************************
 **   Functions
 *****************************************************************************/
+int userial_vendor_set_hw_flow_control(userial_vendor_ioctl_op_t op);
+
 int do_write(int fd, unsigned char *buf,int len)
 {
     int ret = 0;
@@ -1460,6 +1462,10 @@ int rome_set_baudrate_req(int fd)
     /* Total length of the packet to be sent to the Controller */
     size = (HCI_CMD_IND + HCI_COMMAND_HDR_SIZE + VSC_SET_BAUDRATE_REQ_LEN);
 
+    /* HW flow off */
+    userial_vendor_set_hw_flow_control(USERIAL_OP_FLOW_OFF);
+    tcflush(fd, TCIOFLUSH);
+
     /* Flow off during baudrate change */
     if ((err = userial_vendor_ioctl(USERIAL_OP_FLOW_OFF , &flags)) < 0)
     {
@@ -1483,6 +1489,9 @@ int rome_set_baudrate_req(int fd)
         ALOGE("%s: HW Flow-on error: 0x%x \n", __FUNCTION__, err);
         return err;
     }
+
+    /* HW flow on */
+    userial_vendor_set_hw_flow_control(USERIAL_OP_FLOW_ON);
 
     /* Check for response from the Controller */
     if ((err =read_vs_hci_event(fd, rsp, HCI_MAX_EVENT_SIZE)) < 0) {
@@ -1525,6 +1534,9 @@ int rome_hci_reset_req(int fd)
     /* Total length of the packet to be sent to the Controller */
     size = (HCI_CMD_IND + HCI_COMMAND_HDR_SIZE);
 
+    /* HW flow off */
+    userial_vendor_set_hw_flow_control(USERIAL_OP_FLOW_OFF);
+
     /* Flow off during baudrate change */
     if ((err = userial_vendor_ioctl(USERIAL_OP_FLOW_OFF , &flags)) < 0)
     {
@@ -1549,6 +1561,9 @@ int rome_hci_reset_req(int fd)
         ALOGE("%s: HW Flow-on error: 0x%x \n", __FUNCTION__, err);
         return err;
     }
+
+    /* HW flow on */
+    userial_vendor_set_hw_flow_control(USERIAL_OP_FLOW_ON);
 
     /* Wait for command complete event */
     err = read_hci_event(fd, rsp, HCI_MAX_EVENT_SIZE);
@@ -1904,6 +1919,14 @@ int rome_soc_init(int fd, char *bdaddr)
             nvm_file_path = ROME_NVM_TLV_3_0_2_PATH;
             fw_su_info = ROME_3_2_FW_SU;
             fw_su_offset =  ROME_3_2_FW_SW_OFFSET;
+            goto download;
+        case TUFELLO_VER_1_0:
+            rampatch_file_path = TF_RAMPATCH_TLV_1_0_0_PATH;
+            nvm_file_path = TF_NVM_TLV_1_0_0_PATH;
+            goto download;
+        case TUFELLO_VER_1_1:
+            rampatch_file_path = TF_RAMPATCH_TLV_1_0_1_PATH;
+            nvm_file_path = TF_NVM_TLV_1_0_1_PATH;
 
 download:
             /* Change baud rate 115.2 kbps to 3Mbps*/
