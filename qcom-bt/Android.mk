@@ -16,7 +16,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(BOARD_HAVE_BLUETOOTH_QCOM),true)
+ifeq ($(BOARD_HAVE_BLUETOOTH_QCOM_SAMSUNG),true)
 
 include $(CLEAR_VARS)
 
@@ -104,4 +104,4 @@ endif
 
 include $(BUILD_SHARED_LIBRARY)
 
-endif # BOARD_HAVE_BLUETOOTH_QCOM
+endif # BOARD_HAVE_BLUETOOTH_QCOM_SAMSUNG
